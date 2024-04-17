@@ -35,16 +35,37 @@ function reducer(state = initialState, action) {
 //ma store ru misazin ba reducer
 const store = createStore(reducer);
 //hala b in store mitunim eghdamat dispatch ru ersal konim:
-store.dispatch({ type: "account/deposit", payload: 500 });
-store.dispatch({ type: "account/withdrawal", payload: 200 });
-console.log(store.getState());
+// store.dispatch({ type: "account/deposit", payload: 500 });
+// store.dispatch({ type: "account/withdrawal", payload: 200 });
+// console.log(store.getState());
 
 //on LATER bala mikhaym chand ta dade ru set konim
-store.dispatch({
-  type: "account/requestLoan",
-  payload: { amount: 1000, purpose: "Buy a car" },
-});
-console.log(store.getState());
+// store.dispatch({
+//   type: "account/requestLoan",
+//   payload: { amount: 1000, purpose: "Buy a car" },
+// });
+// console.log(store.getState());
 
-store.dispatch({ type: "account/payLoan" });
+// store.dispatch({ type: "account/payLoan" });
+// console.log(store.getState());
+
+//kar ba action creators : tavabeyi k bian in dispatch haru b tor khodkar anjam bedn
+function deposit(amount) {
+  return { type: "account/deposit", payload: amount };
+}
+function withdrawal(amount) {
+  return { type: "account/withdrawal", payload: amount };
+}
+function requestLoan(amount, purpose) {
+  return { type: "account/requestLoan", payload: { amount, purpose } };
+}
+function payLoan() {
+  return { type: "account/payLoan" };
+}
+
+store.dispatch(deposit(500));
+store.dispatch(withdrawal(200));
+store.dispatch(requestLoan(1000, "buy a car"));
+store.dispatch(payLoan());
+
 console.log(store.getState());
