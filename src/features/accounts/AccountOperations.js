@@ -38,7 +38,7 @@ function AccountOperations() {
     if (!loanAmount || !loanPurpose) return;
     dispatch(requestLoan(loanAmount, loanPurpose));
     setLoanAmount("");
-    setLoanPurpose("");
+    setLoanPurpose("USD");
   }
 
   function handlePayLoan() {

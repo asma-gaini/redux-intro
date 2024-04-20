@@ -1,5 +1,6 @@
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import { thunk } from "redux-thunk";
+import { composeWithDevTools } from "redux-devtools-extension";
 
 import accountReducer from "./features/accounts/accountSlice";
 import customerReducer from "./features/customers/customerSlice";
@@ -12,6 +13,10 @@ const rootReducer = combineReducers({
 });
 
 //ma store ru misazin ba reducer
-const store = createStore(rootReducer, applyMiddleware(thunk));
+//miyam mianAfzaremon ru dar abzar tuse-e k nasb kardim gharar midim
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(thunk))
+);
 
 export default store;
