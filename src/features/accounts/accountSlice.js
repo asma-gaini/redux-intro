@@ -17,6 +17,7 @@ const accountSlice = createSlice({
     //esm hamon action creator ha
     deposit(state, action) {
       state.balance += action.payload;
+      state.isLoading = false;
     },
     withdrawal(state, action) {
       state.balance -= action.payload;
@@ -48,16 +49,35 @@ const accountSlice = createSlice({
         state.balance += action.payload.amount;
       },
     },
-    payLoan(state, action) {
+    payLoan(state) {
       state.balance -= state.loan;
       state.loan = 0;
       state.loanPurpose = "";
     },
+    convertingCurrency(state) {
+      state.isLoading = true;
+    },
   },
 });
 
-export const { deposit, withdrawal, requestLoan, payLoan } =
-  accountSlice.actions;
+export const { withdrawal, requestLoan, payLoan } = accountSlice.actions;
+
+export function deposit(amount, currency) {
+  if (currency === "USD") return { type: "account/deposit", payload: amount };
+
+  return async function (dispatch, getState) {
+    dispatch({ type: "account/convertingCurrency" });
+    //API call
+    const res = await fetch(
+      `https://api.frankfurter.app/latest?amount=${amount}&from=${currency}&to=USD`
+    );
+    const data = await res.json();
+    const converted = data.rates.USD;
+
+    //return action
+    dispatch({ type: "account/deposit", payload: converted });
+  };
+}
 
 console.log(requestLoan(1000, "buy car"));
 export default accountSlice.reducer;
